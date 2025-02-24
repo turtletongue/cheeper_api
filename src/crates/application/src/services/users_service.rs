@@ -9,13 +9,13 @@ use crate::dto::users::{
 use crate::hashing::PasswordHasher;
 use crate::repositories::UsersRepository;
 
-pub struct UsersService<'a, K: UsersRepository, V: PasswordHasher> {
-    users_repository: &'a K,
-    password_hasher: &'a V,
+pub struct UsersService<K: UsersRepository, V: PasswordHasher> {
+    users_repository: K,
+    password_hasher: V,
 }
 
-impl<'a, K: UsersRepository, V: PasswordHasher> UsersService<'a, K, V> {
-    pub fn new(users_repository: &'a K, password_hasher: &'a V) -> Self {
+impl<K: UsersRepository, V: PasswordHasher> UsersService<K, V> {
+    pub fn new(users_repository: K, password_hasher: V) -> Self {
         Self {
             users_repository,
             password_hasher,

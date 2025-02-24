@@ -13,6 +13,7 @@ use crate::database::DATABASE_NAME;
 
 const USER_COLLECTION: &'static str = "users";
 
+#[derive(Clone)]
 pub struct MongoUsersRepository {
     client: Arc<Client>,
 }

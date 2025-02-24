@@ -6,6 +6,7 @@ use argon2::{
 use errors::Error;
 use log::error;
 
+#[derive(Clone)]
 pub struct Argon2PasswordHasher;
 
 impl Argon2PasswordHasher {

@@ -2,15 +2,12 @@ use actix_session::{storage::CookieSessionStore, SessionMiddleware};
 use actix_web::cookie::Key;
 use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpServer};
-use infrastructure::hashing::Argon2PasswordHasher;
-use infrastructure::repositories::{MongoMessagesRepository, MongoUsersRepository};
-use mongodb::Client;
-use std::sync::Arc;
-
 use cheeper::config::Config;
 use cheeper::guards::AuthGuard;
 use cheeper::router;
 use cheeper::state::AppState;
+use mongodb::Client;
+use std::sync::Arc;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -31,11 +28,7 @@ async fn main() -> std::io::Result<()> {
                 .cookie_secure(false)
                 .build(),
             )
-            .app_data(web::Data::new(AppState {
-                users_repository: MongoUsersRepository::new(mongo_client.clone()),
-                messages_repository: MongoMessagesRepository::new(mongo_client.clone()),
-                password_hasher: Argon2PasswordHasher::new(),
-            }))
+            .app_data(web::Data::new(AppState::new(mongo_client.clone())))
             .service(web::scope("/authentication").service(router::authentication::authenticate))
             .service(
                 web::scope("/users").service(router::users::create).service(

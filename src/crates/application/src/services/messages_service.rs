@@ -6,13 +6,13 @@ use crate::dto::messages::{
 };
 use crate::repositories::{MessagesRepository, UsersRepository};
 
-pub struct MessageService<'a, K: MessagesRepository, V: UsersRepository> {
-    messages_repository: &'a K,
-    users_repository: &'a V,
+pub struct MessageService<K: MessagesRepository, V: UsersRepository> {
+    messages_repository: K,
+    users_repository: V,
 }
 
-impl<'a, K: MessagesRepository, V: UsersRepository> MessageService<'a, K, V> {
-    pub fn new(messages_repository: &'a K, users_repository: &'a V) -> Self {
+impl<K: MessagesRepository, V: UsersRepository> MessageService<K, V> {
+    pub fn new(messages_repository: K, users_repository: V) -> Self {
         MessageService {
             messages_repository,
             users_repository,
