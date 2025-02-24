@@ -1,0 +1,15 @@
+[package]
+name = "infrastructure"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+errors = { path = "../errors" }
+application = { path = "../application" }
+domain = { path = "../domain" }
+mongodb.workspace = true
+log.workspace = true
+chrono.workspace = true
+argon2.workspace = true
+futures.workspace = true
+bson.workspace = true

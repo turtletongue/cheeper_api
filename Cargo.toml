@@ -1,0 +1,36 @@
+[workspace]
+members = [
+    "src/crates/infrastructure",
+    "src/crates/application",
+    "src/crates/domain",
+    "src/crates/errors",
+]
+
+[package]
+name = "cheeper"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+errors = { path = "./src/crates/errors" }
+infrastructure = { path = "./src/crates/infrastructure" }
+application = { path = "./src/crates/application" }
+domain = { path = "./src/crates/domain" }
+actix-web.workspace = true
+mongodb.workspace = true
+env_logger = "0.11.6"
+actix-session = { version = "0.10.1", features = ["cookie-session"] }
+log = "0.4.26"
+
+[workspace.dependencies]
+actix-web = "4.9.0"
+bson = { version = "2.13.0", features = ["chrono-0_4"] }
+serde = { version = "1.0.218", features = ["derive"] }
+serde_json = "1.0.139"
+derive_more = { version = "2.0.1", features = ["display", "error"] }
+chrono = { version = "0.4.39", features = ["serde"] }
+log = "0.4.26"
+mongodb = "3.2.1"
+argon2 = "0.5.3"
+futures = "0.3.31"
+

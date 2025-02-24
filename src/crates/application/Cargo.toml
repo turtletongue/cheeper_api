@@ -1,0 +1,11 @@
+[package]
+name = "application"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+errors = { path = "../errors" }
+domain = { path = "../domain" }
+serde.workspace = true
+derive_more.workspace = true
+chrono.workspace = true
