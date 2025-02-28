@@ -2,7 +2,7 @@ use actix_session::Session;
 use actix_web::web::{Json, Query};
 use actix_web::{get, post, web, HttpResponse};
 use application::dto::messages::{ListMessagesFromIntervalParams, SendMessageDto};
-use domain::value_objects::UserId;
+use domain::value_objects::{MessageId, UserId};
 use errors::Error;
 
 use crate::state::AppState;
@@ -18,6 +18,23 @@ pub async fn list_messages(
         .find_from_interval(
             params.into_inner(),
             session.get::<UserId>("user_id").unwrap().unwrap(),
+        )
+        .await?;
+
+    Ok(HttpResponse::Ok().json(result))
+}
+
+#[get("{id}")]
+pub async fn get_message_by_id(
+    state: web::Data<AppState>,
+    id: web::Path<String>,
+    session: Session,
+) -> Result<HttpResponse, Error> {
+    let result = state
+        .message_service
+        .get_by_id(
+            MessageId(id.into_inner()),
+            session.get("user_id").unwrap().unwrap(),
         )
         .await?;
 

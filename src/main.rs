@@ -47,6 +47,7 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::scope("/messages")
                     .guard(AuthGuard)
+                    .service(router::messages::get_message_by_id)
                     .service(router::messages::list_messages)
                     .service(router::messages::send_message),
             )

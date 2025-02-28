@@ -1,8 +1,8 @@
-use domain::value_objects::UserId;
+use domain::value_objects::{MessageId, UserId};
 use errors::Error;
 
 use crate::dto::messages::{
-    ListMessagesFromIntervalDto, ListMessagesFromIntervalParams, SendMessageDto,
+    GetMessageDto, ListMessagesFromIntervalDto, ListMessagesFromIntervalParams, SendMessageDto,
 };
 use crate::repositories::{MessagesRepository, UsersRepository};
 
@@ -17,6 +17,24 @@ impl<K: MessagesRepository, V: UsersRepository> MessageService<K, V> {
             messages_repository,
             users_repository,
         }
+    }
+
+    pub async fn get_by_id(&self, id: MessageId, user_id: UserId) -> Result<GetMessageDto, Error> {
+        let message = self.messages_repository.message_of_id(id).await?;
+
+        if let None = message {
+            return Err(Error::NotFoundError {
+                message: "Message not found",
+            });
+        }
+
+        let message = message.unwrap();
+
+        if *message.get_from_id() != user_id && *message.get_to_id() != user_id {
+            return Err(Error::ForbiddenError {});
+        }
+
+        Ok(message.into())
     }
 
     pub async fn find_from_interval(

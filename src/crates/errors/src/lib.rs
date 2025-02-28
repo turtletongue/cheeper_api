@@ -11,6 +11,8 @@ pub enum Error {
     NotFoundError { message: &'static str },
     #[display("UnauthorizedError: Invalid login or password")]
     UnauthorizedError,
+    #[display("ForbiddenError: Forbidden!")]
+    ForbiddenError,
     #[display("DatabaseError")]
     DatabaseError,
     #[display("PasswordError")]
@@ -24,6 +26,7 @@ impl error::ResponseError for Error {
         match *self {
             Error::InvalidStateError { .. } => StatusCode::BAD_REQUEST,
             Error::NotFoundError { .. } => StatusCode::NOT_FOUND,
+            Error::ForbiddenError => StatusCode::FORBIDDEN,
             Error::UnauthorizedError => StatusCode::UNAUTHORIZED,
             Error::DatabaseError => StatusCode::INTERNAL_SERVER_ERROR,
             Error::PasswordError => StatusCode::INTERNAL_SERVER_ERROR,
